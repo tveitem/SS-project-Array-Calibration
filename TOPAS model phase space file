@@ -1,0 +1,569 @@
+#THE WORLD GEOMETRY
+s:Ge/World/Type = "TsBox"
+s:Ge/World/Material = "Air"
+d:Ge/World/HLX = 0.5 m # Half Length
+d:Ge/World/HLY = 1 m
+d:Ge/World/HLZ = 0.5 m
+d:Ge/World/TransX = 0. m
+d:Ge/World/TransY = 0. m
+d:Ge/World/TransZ = 0. m
+d:Ge/World/RotX = 0. deg
+d:Ge/World/RotY = 0. deg
+d:Ge/World/RotZ = 0. deg
+b:Ge/World/Invisible = "False"
+
+#Graphics
+s:Gr/ViewA/Type              = "OpenGL"
+b:Gr/ViewA/IncludeStepPoints = "True"
+u:Gr/ViewA/Zoom = 1
+sv:Gr/ViewA/VisibleWorlds = 1 "All"
+b:Gr/ViewA/IncludeAxes="False"
+d:Gr/ViewA/AxesSize= 5 cm
+
+#Physics
+s:Ts/G4DataDirectory = "../../G4Data/"
+
+s:Ph/Default/Type = "Geant4_Modular"
+sv:Ph/Default/Modules = 1 "g4em-penelope"
+#sv:Ph/Default/Modules = 6 "g4em-standard_opt4" "g4h-phy_QGSP_BIC_HP" "g4decay" "g4ion-binarycascade" "g4h-elastic_HP" "g4stopping"
+
+#NEW MATERIAL: PMMA
+sv:Ma/PMMA/Components = 3 "Carbon" "Hydrogen" "Oxygen"
+uv:Ma/PMMA/Fractions = 3 0.599848 0.080538 0.319614
+d:Ma/PMMA/Density = 1.190 g/cm3
+d:Ma/PMMA/MeanExcitationEnergy = 85.7 eV
+s:Ma/PMMA/DefaultColor = "lightblue"
+
+#LEAD BOX
+s:Ge/LeadBox/Parent="World"
+s:Ge/LeadBox/Type = "TsBox"
+s:Ge/LeadBox/Material = "Lead"
+d:Ge/LeadBox/HLX = 5.0 cm # Half Length
+d:Ge/LeadBox/HLY = 15.2 mm
+d:Ge/LeadBox/HLZ = 5.0 cm
+d:Ge/LeadBox/TransX = 0. m
+d:Ge/LeadBox/TransY = 0. m
+d:Ge/LeadBox/TransZ = 0. m
+d:Ge/LeadBox/RotX = 0. deg
+d:Ge/LeadBox/RotY = 0. deg
+d:Ge/LeadBox/RotZ = 0. deg
+
+
+#VACUUM BOX INSIDE LEAD BOX
+s:Ge/VacuumBox/Parent="LeadBox"
+s:Ge/VacuumBox/Type = "TsBox"
+s:Ge/VacuumBox/Material = "Vacuum"
+d:Ge/VacuumBox/HLX = 4. cm # Half Length
+d:Ge/VacuumBox/HLY = 10.2 mm
+d:Ge/VacuumBox/HLZ = 4. cm
+d:Ge/VacuumBox/TransX = 0. m
+d:Ge/VacuumBox/TransY = 0. m
+d:Ge/VacuumBox/TransZ = 0. m
+d:Ge/VacuumBox/RotX = 0. deg
+d:Ge/VacuumBox/RotY = 0. deg
+d:Ge/VacuumBox/RotZ = 0. deg
+
+#BEAM SOURCE
+s:Ge/BeamPosition/Parent="LeadBox"
+s:Ge/BeamPosition/Type="Group"
+d:Ge/BeamPosition/TransX=0. m
+d:Ge/BeamPosition/TransY=0. m
+d:Ge/BeamPosition/TransZ= -3.5 cm
+d:Ge/BeamPosition/RotX=0. deg
+d:Ge/BeamPosition/RotY=0. deg
+d:Ge/BeamPosition/RotZ=0. deg
+
+s:So/Demo/Type = "Beam" # Beam, Isotropic, Emittance or PhaseSpace
+s:So/Demo/Component = "BeamPosition"
+s:So/Demo/BeamParticle = "e-"
+d:So/Demo/BeamEnergy = 200 keV
+u:So/Demo/BeamEnergySpread = 0.000001
+s:So/Demo/BeamPositionDistribution = "Flat" # None, Flat or Gaussian
+s:So/Demo/BeamPositionCutoffShape = "Ellipse" # Rectangle or Ellipse (if Flat or Gaussian)
+d:So/Demo/BeamPositionCutoffX = 0.35 cm # X extent of position (if Flat or Gaussian)
+d:So/Demo/BeamPositionCutoffY = 0.35 cm # Y extent of position (if Flat or Gaussian)
+
+d:So/Demo/BeamPositionSpreadX = 0.0000001 cm # distribution (if Gaussian)
+d:So/Demo/BeamPositionSpreadY = 0.0000001 cm # distribution (if Gaussian)
+s:So/Demo/BeamAngularDistribution = "None" # None, Flat or Gaussian
+d:So/Demo/BeamAngularCutoffX = 90. deg # X cutoff of angular distrib (if Flat or Gaussian)
+d:So/Demo/BeamAngularCutoffY = 90. deg # Y cutoff of angular distrib (if Flat or Gaussian)
+d:So/Demo/BeamAngularSpreadX = 0.00000001 deg # X angular distribution (if Gaussian)
+d:So/Demo/BeamAngularSpreadY = 0.00000001 deg # Y angular distribution (if Gaussian)
+
+#ROTATED TARGET
+s:Ge/RotatedTarget/Type                    = "G4Trd"
+s:Ge/RotatedTarget/Parent                  = "VacuumBox"
+s:Ge/RotatedTarget/Material                = "G4_W"
+d:Ge/RotatedTarget/TransX                  = 0 cm
+d:Ge/RotatedTarget/TransY                  = 0 mm #-(113 + HLY) mm
+d:Ge/RotatedTarget/TransZ                  = 2.8867513459481287 mm
+d:Ge/RotatedTarget/RotX                    = -90 deg
+d:Ge/RotatedTarget/RotY                    = 0 deg
+d:Ge/RotatedTarget/RotZ                    = 0 deg
+d:Ge/RotatedTarget/HLX2                    = 5 mm
+d:Ge/RotatedTarget/HLX1                    = 5 mm #not present
+d:Ge/RotatedTarget/HLY2                    = 1 mm #bottom
+d:Ge/RotatedTarget/HLY1                    = 3.8867513459481287 mm
+d:Ge/RotatedTarget/HLZ                     = 5 mm
+s:Ge/RotatedTarget/Color                   = "green"
+
+#VACUUM BOX ABOVE BERYLLIUM WINDOW
+s:Ge/VacuumWindow/Type = "TsBox"
+s:Ge/VacuumWindow/Parent="LeadBox"
+s:Ge/VacuumWindow/Material = "Vacuum"
+d:Ge/VacuumWindow/HLX = 0.7 cm 
+d:Ge/VacuumWindow/HLY = 2.5 mm
+d:Ge/VacuumWindow/HLZ = 0.7 cm 
+d:Ge/VacuumWindow/TransX = 0. m
+d:Ge/VacuumWindow/TransY = -12.7 mm #-(15.2 + HLY) mm
+d:Ge/VacuumWindow/TransZ = 0. cm
+d:Ge/VacuumWindow/RotX = 0 deg
+d:Ge/VacuumWindow/RotY = 0 deg
+d:Ge/VacuumWindow/RotZ = 0. deg
+s:Ge/VacuumWindow/Color = "orange"
+
+#BERYLLIUM WINDOW
+s:Ge/BeWindow/Type = "TsBox"
+s:Ge/BeWindow/Parent="World"
+s:Ge/BeWindow/Material = "G4_Be"
+d:Ge/BeWindow/HLX = 0.7 cm 
+d:Ge/BeWindow/HLY = 0.4 mm
+d:Ge/BeWindow/HLZ = 0.7 cm 
+d:Ge/BeWindow/TransX = 0. m
+d:Ge/BeWindow/TransY = -15.6 mm #-(15.2 + HLY) mm
+d:Ge/BeWindow/TransZ = 0. cm
+d:Ge/BeWindow/RotX = 0 deg
+d:Ge/BeWindow/RotY = 0 deg
+d:Ge/BeWindow/RotZ = 0. deg
+s:Ge/BeWindow/Color = "blue"
+
+# PRIMARY COLIMATOR (Cons)
+s:Ge/DemoCons/Type                   = "G4Cons"
+s:Ge/DemoCons/Parent                 = "World"
+s:Ge/DemoCons/Material               = "Steel"
+d:Ge/DemoCons/TransX                 = 0 cm
+d:Ge/DemoCons/TransY                 = -46.25 mm #-(36 + HLY) mm
+d:Ge/DemoCons/TransZ                 = 0 cm
+d:Ge/DemoCons/RotX                   = -90 deg
+d:Ge/DemoCons/RotY                   = 0 deg
+d:Ge/DemoCons/RotZ                   = 0 deg
+d:Ge/DemoCons/RMin1                  = 14.07 mm
+d:Ge/DemoCons/RMax1                  = 45 mm
+d:Ge/DemoCons/RMin2                  = 19.945 mm
+d:Ge/DemoCons/RMax2                  = 45 mm
+d:Ge/DemoCons/HL                     = 10.25 mm
+d:Ge/DemoCons/SPhi                   = 0 rad
+d:Ge/DemoCons/DPhi                   = 360 deg
+s:Ge/DemoCons/Color                  = "red"
+s:Ge/DemoCons/DrawingStyle           = "FullWireFrame"
+
+#FILTER LAYER 1 (200Kv) Sn (tin)
+s:Ge/Filter1/Type = "TsBox"
+s:Ge/Filter1/Parent="World"
+s:Ge/Filter1/Material = "G4_Sn"
+d:Ge/Filter1/HLX = 2.5 cm  
+d:Ge/Filter1/HLY = 0.2 mm
+d:Ge/Filter1/HLZ = 2.5 cm 
+d:Ge/Filter1/TransX = 0. m
+d:Ge/Filter1/TransY = -56.7 mm #-(56.5 + HLY) mm
+d:Ge/Filter1/TransZ = 0. cm
+d:Ge/Filter1/RotX = 0 deg
+d:Ge/Filter1/RotY = 0 deg
+d:Ge/Filter1/RotZ = 0. deg
+s:Ge/Filter1/Color = "blue"
+
+#FILTER LAYER 2 (200Kv) Cu (copper)
+s:Ge/Filter2/Type = "TsBox"
+s:Ge/Filter2/Parent="World"
+s:Ge/Filter2/Material = "G4_Cu"
+d:Ge/Filter2/HLX = 2.5 cm 
+d:Ge/Filter2/HLY = 0.125 mm
+d:Ge/Filter2/HLZ = 2.5 cm 
+d:Ge/Filter2/TransX = 0. m
+d:Ge/Filter2/TransY = -57.025 mm #-(56.9 + HLY) mm
+d:Ge/Filter2/TransZ = 0. cm
+d:Ge/Filter2/RotX = 0 deg
+d:Ge/Filter2/RotY = 0 deg
+d:Ge/Filter2/RotZ = 0. deg
+s:Ge/Filter2/Color = "white"
+
+#FILTER LAYER 3 (200Kv) Al (aluminium)
+s:Ge/Filter3/Type = "TsBox"
+s:Ge/Filter3/Parent="World"
+s:Ge/Filter3/Material = "G4_Al"
+d:Ge/Filter3/HLX = 2.5 cm 
+d:Ge/Filter3/HLY = 0.5 mm
+d:Ge/Filter3/HLZ = 2.5 cm 
+d:Ge/Filter3/TransX = 0. m
+d:Ge/Filter3/TransY = -57.65 mm #-(57.15 + HLY) mm
+d:Ge/Filter3/TransZ = 0. cm
+d:Ge/Filter3/RotX = 0 deg
+d:Ge/Filter3/RotY = 0 deg
+d:Ge/Filter3/RotZ = 0. deg
+s:Ge/Filter3/Color = "purple"
+
+#MONITOR CHAMBER LAYER 1
+s:Ge/MonitorChamber1/Type = "TsBox"
+s:Ge/MonitorChamber1/Parent="World"
+s:Ge/MonitorChamber1/Material = "Air"
+d:Ge/MonitorChamber1/HLX = 2.5 cm 
+d:Ge/MonitorChamber1/HLY = 0.5 mm
+d:Ge/MonitorChamber1/HLZ = 2.5 cm 
+d:Ge/MonitorChamber1/TransX = 0. m
+d:Ge/MonitorChamber1/TransY = -69.5 mm #-(69 + HLY) mm
+d:Ge/MonitorChamber1/TransZ = 0. cm
+d:Ge/MonitorChamber1/RotX = 0 deg
+d:Ge/MonitorChamber1/RotY = 0 deg
+d:Ge/MonitorChamber1/RotZ = 0. deg
+s:Ge/MonitorChamber1/Color = "blue"
+
+#MONITOR CHAMBER LAYER 2
+s:Ge/MonitorChamber2/Type = "TsBox"
+s:Ge/MonitorChamber2/Parent="World"
+s:Ge/MonitorChamber2/Material = "Air"
+d:Ge/MonitorChamber2/HLX = 2.5 cm 
+d:Ge/MonitorChamber2/HLY = 0.5 mm
+d:Ge/MonitorChamber2/HLZ = 2.5 cm 
+d:Ge/MonitorChamber2/TransX = 0. m
+d:Ge/MonitorChamber2/TransY = -77 mm #-(70 (end of layer 1) + 6.5mm + HLY) mm
+d:Ge/MonitorChamber2/TransZ = 0. cm
+d:Ge/MonitorChamber2/RotX = 0 deg
+d:Ge/MonitorChamber2/RotY = 0 deg
+d:Ge/MonitorChamber2/RotZ = 0. deg
+s:Ge/MonitorChamber2/Color = "white"
+
+#MONITOR CHAMBER 3
+s:Ge/MonitorChamber3/Type 					= "TsBox"
+s:Ge/MonitorChamber3/Parent					="World"
+s:Ge/MonitorChamber3/Material 				= "Air"
+d:Ge/MonitorChamber3/HLX 					= 2.5 cm 
+d:Ge/MonitorChamber3/HLY 					= 0.5 mm
+d:Ge/MonitorChamber3/HLZ 					= 2.5 cm 
+d:Ge/MonitorChamber3/TransX 				= 0. m
+d:Ge/MonitorChamber3/TransY 				= -84.5 mm #-(77.5 (end of layer 1) + 6.5mm + HLY) mm
+d:Ge/MonitorChamber3/TransZ 				= 0. cm
+d:Ge/MonitorChamber3/RotX 					= 0 deg
+d:Ge/MonitorChamber3/RotY 					= 0 deg
+d:Ge/MonitorChamber3/RotZ 					= 0. deg
+s:Ge/MonitorChamber3/Color 					= "purple"
+
+
+# APPLICATOR HEAD
+s:Ge/ApplicatorHead/Type                    = "G4Trd"
+s:Ge/ApplicatorHead/Parent                  = "World"
+s:Ge/ApplicatorHead/Material                = "Steel"
+d:Ge/ApplicatorHead/TransX                  = 0 cm
+d:Ge/ApplicatorHead/TransY                  = -100.25 mm
+d:Ge/ApplicatorHead/TransZ                  = 0 cm
+d:Ge/ApplicatorHead/RotX                    = 90 deg
+d:Ge/ApplicatorHead/RotY                    = 0 deg
+d:Ge/ApplicatorHead/RotZ                    = 0 deg
+d:Ge/ApplicatorHead/HLX1                    = 60 mm
+d:Ge/ApplicatorHead/HLX2                    = 60 mm #not present
+d:Ge/ApplicatorHead/HLY1                    = 60 mm #bottom
+d:Ge/ApplicatorHead/HLY2                    = 60 mm #not present
+d:Ge/ApplicatorHead/HLZ                     = 12.75 mm
+s:Ge/ApplicatorHead/Color                   = "red"
+
+s:Ge/ApplicatorHead_inside/Type                    = "G4Trd"
+s:Ge/ApplicatorHead_inside/Parent                  = "ApplicatorHead"
+s:Ge/ApplicatorHead_inside/Material                = "Air"
+d:Ge/ApplicatorHead_inside/TransX                  = 0 cm
+d:Ge/ApplicatorHead_inside/TransY                  = 0 m
+d:Ge/ApplicatorHead_inside/TransZ                  = 0 cm
+d:Ge/ApplicatorHead_inside/RotX                    = 0 deg
+d:Ge/ApplicatorHead_inside/RotY                    = 0 deg
+d:Ge/ApplicatorHead_inside/RotZ                    = 0 deg
+d:Ge/ApplicatorHead_inside/HLX2                    = 18.72 mm
+d:Ge/ApplicatorHead_inside/HLX1                    = 23.79 mm
+d:Ge/ApplicatorHead_inside/HLY2                    = 18.72 mm
+d:Ge/ApplicatorHead_inside/HLY1                    = 23.79 mm
+d:Ge/ApplicatorHead_inside/HLZ                     = 12.75 mm
+s:Ge/ApplicatorHead_inside/Color                   = "white"
+
+
+# APPLICATOR PART 1: Cu
+s:Ge/ApplicatorP1/Type                    = "G4Trd"
+s:Ge/ApplicatorP1/Parent                  = "World"
+s:Ge/ApplicatorP1/Material                = "G4_Cu"
+d:Ge/ApplicatorP1/TransX                  = 0 cm
+d:Ge/ApplicatorP1/TransY                  = -281.5 mm #-(113 + HLY) mm
+d:Ge/ApplicatorP1/TransZ                  = 0 cm
+d:Ge/ApplicatorP1/RotX                    = 90 deg
+d:Ge/ApplicatorP1/RotY                    = 0 deg
+d:Ge/ApplicatorP1/RotZ                    = 0 deg
+d:Ge/ApplicatorP1/HLX2                    = 27.79 mm
+d:Ge/ApplicatorP1/HLX1                    = 94.83 mm #not present
+d:Ge/ApplicatorP1/HLY2                    = 27.79 mm #bottom
+d:Ge/ApplicatorP1/HLY1                    = 94.83 mm #not present
+d:Ge/ApplicatorP1/HLZ                     = 168.5 mm
+s:Ge/ApplicatorP1/Color                   = "green"
+
+s:Ge/ApplicatorP1_inside/Type                    = "G4Trd"
+s:Ge/ApplicatorP1_inside/Parent                  = "ApplicatorP1"
+s:Ge/ApplicatorP1_inside/Material                = "Air"
+d:Ge/ApplicatorP1_inside/TransX                  = 0 cm
+d:Ge/ApplicatorP1_inside/TransY                  = 0 m
+d:Ge/ApplicatorP1_inside/TransZ                  = 0 cm
+d:Ge/ApplicatorP1_inside/RotX                    = 0 deg
+d:Ge/ApplicatorP1_inside/RotY                    = 0 deg
+d:Ge/ApplicatorP1_inside/RotZ                    = 0 deg
+d:Ge/ApplicatorP1_inside/HLX2                    = 23.79  mm
+d:Ge/ApplicatorP1_inside/HLX1                    = 90.83 mm
+d:Ge/ApplicatorP1_inside/HLY2                    = 23.79  mm
+d:Ge/ApplicatorP1_inside/HLY1                    = 90.83 mm
+d:Ge/ApplicatorP1_inside/HLZ                     = 168.5 mm
+s:Ge/ApplicatorP1_inside/Color                   = "white"
+
+# APPLICATOR PART 2: Lead
+s:Ge/ApplicatorP2/Type                    = "G4Trd"
+s:Ge/ApplicatorP2/Parent                  = "World"
+s:Ge/ApplicatorP2/Material                = "Lead"
+d:Ge/ApplicatorP2/TransX                  = 0 cm
+d:Ge/ApplicatorP2/TransY                  = -460 mm #-(450 + HLY) mm
+d:Ge/ApplicatorP2/TransZ                  = 0 cm
+d:Ge/ApplicatorP2/RotX                    = 90 deg
+d:Ge/ApplicatorP2/RotY                    = 0 deg
+d:Ge/ApplicatorP2/RotZ                    = 0 deg
+d:Ge/ApplicatorP2/HLX2                    = 94.83 mm
+d:Ge/ApplicatorP2/HLX1                    = 98.804 mm #not present
+d:Ge/ApplicatorP2/HLY2                    = 94.83 mm #bottom
+d:Ge/ApplicatorP2/HLY1                    = 98.804 mm #not present
+d:Ge/ApplicatorP2/HLZ                     = 10 mm
+s:Ge/ApplicatorP2/Color                   = "orange"
+
+s:Ge/ApplicatorP2_inside/Type                    = "G4Trd"
+s:Ge/ApplicatorP2_inside/Parent                  = "ApplicatorP2"
+s:Ge/ApplicatorP2_inside/Material                = "Air"
+d:Ge/ApplicatorP2_inside/TransX                  = 0 cm
+d:Ge/ApplicatorP2_inside/TransY                  = 0 m
+d:Ge/ApplicatorP2_inside/TransZ                  = 0 cm
+d:Ge/ApplicatorP2_inside/RotX                    = 0 deg
+d:Ge/ApplicatorP2_inside/RotY                    = 0 deg
+d:Ge/ApplicatorP2_inside/RotZ                    = 0 deg
+d:Ge/ApplicatorP2_inside/HLX2                    = 90.83  mm
+d:Ge/ApplicatorP2_inside/HLX1                    = 94.804 mm
+d:Ge/ApplicatorP2_inside/HLY2                    = 90.83 mm
+d:Ge/ApplicatorP2_inside/HLY1                    = 94.804 mm
+d:Ge/ApplicatorP2_inside/HLZ                     = 10 mm
+s:Ge/ApplicatorP2_inside/Color                   = "white"
+
+# APPLICATOR PART 3: PMMA
+s:Ge/ApplicatorP3/Type                    = "G4Trd"
+s:Ge/ApplicatorP3/Parent                  = "World"
+s:Ge/ApplicatorP3/Material                = "PMMA"
+d:Ge/ApplicatorP3/TransX                  = 0 cm
+d:Ge/ApplicatorP3/TransY                  = -483 mm #-(470 + HLY) mm
+d:Ge/ApplicatorP3/TransZ                  = 0 cm
+d:Ge/ApplicatorP3/RotX                    = 90 deg
+d:Ge/ApplicatorP3/RotY                    = 0 deg
+d:Ge/ApplicatorP3/RotZ                    = 0 deg
+d:Ge/ApplicatorP3/HLX2                    = 98.804 mm
+d:Ge/ApplicatorP3/HLX1                    = 104 mm #not present
+d:Ge/ApplicatorP3/HLY2                    = 98.804 mm #bottom
+d:Ge/ApplicatorP3/HLY1                    = 104 mm #not present
+d:Ge/ApplicatorP3/HLZ                     = 13 mm
+s:Ge/ApplicatorP3/Color                   = "pink"
+
+s:Ge/ApplicatorP3_inside/Type                    = "G4Trd"
+s:Ge/ApplicatorP3_inside/Parent                  = "ApplicatorP3"
+s:Ge/ApplicatorP3_inside/Material                = "Air"
+d:Ge/ApplicatorP3_inside/TransX                  = 0 cm
+d:Ge/ApplicatorP3_inside/TransY                  = 0 m
+d:Ge/ApplicatorP3_inside/TransZ                  = 0 cm
+d:Ge/ApplicatorP3_inside/RotX                    = 0 deg
+d:Ge/ApplicatorP3_inside/RotY                    = 0 deg
+d:Ge/ApplicatorP3_inside/RotZ                    = 0 deg
+d:Ge/ApplicatorP3_inside/HLX2                    = 94.804  mm
+d:Ge/ApplicatorP3_inside/HLX1                    = 100 mm
+d:Ge/ApplicatorP3_inside/HLY2                    = 94.804 mm
+d:Ge/ApplicatorP3_inside/HLY1                    = 100 mm
+d:Ge/ApplicatorP3_inside/HLZ                     = 13 mm
+s:Ge/ApplicatorP3_inside/Color                   = "white"
+
+#APPLICATOR BOTTOM
+s:Ge/ApplicatorBottom/Type = "TsBox"
+s:Ge/ApplicatorBottom/Parent="World"
+s:Ge/ApplicatorBottom/Material = "PMMA" 
+d:Ge/ApplicatorBottom/HLX = 104 mm 
+d:Ge/ApplicatorBottom/HLY = 2 mm
+d:Ge/ApplicatorBottom/HLZ = 104 mm 
+d:Ge/ApplicatorBottom/TransX = 0. m
+d:Ge/ApplicatorBottom/TransY = -498 mm
+d:Ge/ApplicatorBottom/TransZ = 0. cm
+d:Ge/ApplicatorBottom/RotX = 0 deg
+d:Ge/ApplicatorBottom/RotY = 0 deg
+d:Ge/ApplicatorBottom/RotZ = 0. deg
+s:Ge/ApplicatorBottom/Color = "PINK"
+
+
+################################# Scoring Fluence #############################
+#s:Ge/AirSlab/Type = "TsBox"
+#s:Ge/AirSlab/Parent="World"
+#s:Ge/AirSlab/Material = "Air"
+#d:Ge/AirSlab/HLX = 10 cm # Half Length
+#d:Ge/AirSlab/HLY = 0.5 mm
+#d:Ge/AirSlab/HLZ = 10 cm
+#d:Ge/AirSlab/TransX = 0. m
+#d:Ge/AirSlab/TransY = -500.5 mm #-(510 + HLY)
+#d:Ge/AirSlab/TransZ = 0. cm
+#d:Ge/AirSlab/RotX = 0 deg
+#d:Ge/AirSlab/RotY = 0 deg
+#d:Ge/AirSlab/RotZ = 0. deg
+#s:Ge/AirSlab/Color = "white"
+
+#s:Sc/FluenceScorer/Surface = "AirSlab/YPlusSurface"
+#s:Sc/FluenceScorer/Quantity 			= "Fluence"
+#s:Sc/FluenceScorer/Component 		       = "AirSlab"
+#sv:Sc/FluenceScorer/Report		        = 1 "Mean" #"Standard_Deviation"
+#s:Sc/FluenceScorer/IfOutputFileAlreadyExists      = "Overwrite"
+#s:Sc/FluenceScorer/OutPutType                     = "csv"  
+#i:Sc/FluenceScorer/EBins                     = 290
+#d:Sc/FluenceScorer/EBinMin                   = 5 keV
+#d:Sc/FluenceScorer/EBinMax  		   = 200 keV
+#s:Sc/FluenceScorer/OutputFile = "enter name"
+
+################################# Scoring Dose ###############################
+
+#BUILD-UP OF DOSE (UPPER PART OF ARRAY)
+#s:Ge/ArrayBuildUp/Type = "TsBox"
+#s:Ge/ArrayBuildUp/Parent="World"
+#s:Ge/ArrayBuildUp/Material = "G4_WATER"
+#d:Ge/ArrayBuildUp/HLX = 13.25 cm # Half Length
+#d:Ge/ArrayBuildUp/HLY = 3.85 mm
+#d:Ge/ArrayBuildUp/HLZ = 13.25 cm
+#d:Ge/ArrayBuildUp/TransX = 0. m
+#d:Ge/ArrayBuildUp/TransY = -503.85 mm #-(500 + HLY)
+#d:Ge/ArrayBuildUp/TransZ = 0. cm
+#d:Ge/ArrayBuildUp/RotX = 0 deg
+#d:Ge/ArrayBuildUp/RotY = 0 deg
+#d:Ge/ArrayBuildUp/RotZ = 0. deg
+#s:Ge/ArrayBuildUp/Color = "blue"
+
+#IONISATION CHAMBERS (I.E. VOXELS)
+#s:Ge/Array/Type = "TsBox"
+#s:Ge/Array/Parent="World"
+#s:Ge/Array/Material = "G4_WATER"
+#d:Ge/Array/HLX = 13.25 cm # Half Length
+#d:Ge/Array/HLY = 1 mm
+#d:Ge/Array/HLZ = 13.25 cm
+#d:Ge/Array/TransX = 0. m
+#d:Ge/Array/TransY = -508.7 mm #-(500 + 8.7mm (effective depth))
+#d:Ge/Array/TransZ = 0. cm
+#d:Ge/Array/RotX = 0 deg
+#d:Ge/Array/RotY = 0 deg
+#d:Ge/Array/RotZ = 0. deg
+#s:Ge/Array/Color = "white"
+#i:Ge/Array/XBins		= 53
+#i:Ge/Array/YBins		= 1
+#i:Ge/Array/ZBins		= 53
+
+
+#BACKSCATTERING WATER SLAB
+#s:Ge/ArrayBackScatter/Type = "TsBox"
+#s:Ge/ArrayBackScatter/Parent="World"
+#s:Ge/ArrayBackScatter/Material = "G4_WATER"
+#d:Ge/ArrayBackScatter/HLX = 13.25 cm # Half Length
+#d:Ge/ArrayBackScatter/HLY = 10 cm #20cm for BS to be safe
+#d:Ge/ArrayBackScatter/HLZ = 13.25 cm
+#d:Ge/ArrayBackScatter/TransX = 0. m
+#d:Ge/ArrayBackScatter/TransY = -609.7 mm #-(500 + 8.7mm +1mm + HLY)
+#d:Ge/ArrayBackScatter/TransZ = 0. cm
+#d:Ge/ArrayBackScatter/RotX = 0 deg
+#d:Ge/ArrayBackScatter/RotY = 0 deg
+#d:Ge/ArrayBackScatter/RotZ = 0. deg
+#s:Ge/ArrayBackScatter/Color = "blue"
+
+
+#s:Sc/DoseScorer/Quantity                  = "DoseToMedium"
+#s:Sc/DoseScorer/Component                 = "Array"
+#s:Sc/DoseScorer/Material                  = "G4_WATER"
+#b:Sc/DoseScorer/OutputToConsole           = "FALSE"
+#s:Sc/DoseScorer/IfOutputFileAlreadyExists = "Overwrite"
+#sv:Sc/DoseScorer/Report                   = 1 "Mean" #"Standard_Deviation"
+#s:Sc/DoseScorer/OutPutType              = "binary"  
+#s:Sc/DoseScorer/Outputfile		     = "Dose_to_array_VRT"
+#b:Sc/DoseScorer/PreCalculateStoppingPowerRatios = "True"
+
+
+########################### MAKING PHASE SPACE FILE #########################
+
+s:Ge/AirSlab/Type = "TsBox"
+s:Ge/AirSlab/Parent="World"
+s:Ge/AirSlab/Material = "Air"
+d:Ge/AirSlab/HLX = 12 cm # Half Length
+d:Ge/AirSlab/HLY = 0.5 mm
+d:Ge/AirSlab/HLZ = 12 cm
+d:Ge/AirSlab/TransX = 0. m
+d:Ge/AirSlab/TransY = -500.5 mm #-(510 + HLY)
+d:Ge/AirSlab/TransZ = 0. cm
+d:Ge/AirSlab/RotX = 0 deg
+d:Ge/AirSlab/RotY = 0 deg
+d:Ge/AirSlab/RotZ = 0. deg
+s:Ge/AirSlab/Color = "white"
+
+s:Sc/MyScorer/Surface = "AirSlab/YPlusSurface"
+s:Sc/MyScorer/Quantity 			= "Phasespace"
+s:Sc/MyScorer/Component 		       = "AirSlab"
+#sv:Sc/MyScorer/Report		        = 1 "Mean" #"Standard_Deviation"
+s:Sc/MyScorer/IfOutputFileAlreadyExists      = "Overwrite"
+s:Sc/MyScorer/OutputType = "Binary"
+#i:Sc/MyScorer/EBins                     = 290
+#d:Sc/MyScorer/EBinMin                   = 5 keV
+#d:Sc/MyScorer/EBinMax  		   = 200 keV
+s:Sc/MyScorer/OutputFile = "phase_space_noBCSE"
+
+b:Sc/MyScorer/IncludeTOPASTime = "False"
+b:Sc/MyScorer/IncludeTimeOfFlight = "False"
+b:Sc/MyScorer/IncludeRunID = "False"
+b:Sc/MyScorer/IncludeEventID = "False"
+b:Sc/MyScorer/IncludeTrackID = "False"
+b:Sc/MyScorer/IncludeParentID = "False"
+b:Sc/MyScorer/IncludeCharge= "False"
+b:Sc/MyScorer/IncludeCreatorProcess = "False"
+b:Sc/MyScorer/IncludeVertexInfo= "False" #initial KE, position and momentum
+b:Sc/MyScorer/IncludeSeed = "False"
+
+
+i:Sc/MyScorer/OutputBufferSize = 1000
+
+
+####################Variance Reduction: Secondary Biasing###########################
+s:Ge/RotatedTarget/AssigntoRegionNamed = "MyRegion"
+s:Vr/ParticleSplit/Type = "SecondaryBiasing"
+sv:Vr/ParticleSplit/ForRegion/MyRegion/ProcessesNamed = 1 "eBrem"
+uv:Vr/ParticleSplit/ForRegion/MyRegion/SplitNumber = 1 200 #50 #1 1 
+dv:Vr/ParticleSplit/ForRegion/MyRegion/MaximumEnergies = 1 15 MeV 
+s:Vr/DirectionalFilter/Type = "DirectionalRussianRoulette"
+s:Vr/DirectionalFilter/ReferenceComponent = "RotatedTarget"
+dv:Vr/DirectionalFilter/ForRegion/MyRegion/DirectionalSplitLimits = 1 50.0 cm
+dv:Vr/DirectionalFilter/ForRegion/MyRegion/DirectionalSplitRadius = 1 15.0 cm
+sv:Vr/DirectionalFilter/ForRegion/MyRegion/processesNamed = 1 "eBrem"
+
+
+########################Variance Reduction: BCSE##################################
+#s:Vr/CrossSectionEnhancement/Type = "CrossSectionEnhancement"
+#sv:Vr/CrossSectionEnhancement/processesNamed = 1 "eBrem"
+#uv:Vr/CrossSectionEnhancement/EnhancementFactor = 1 10
+
+b:Vr/UseVarianceReduction = "True"
+
+b:Ph/Default/Auger = "False"
+
+#sv:Gr/ViewA/OnlyIncludeParticlesCharged = 1 "neutral" #Hiding electrons to evaluate secondary biasing
+#s:Gr/ViewA/ColorBy                       = "CreatorProcess"
+#sv:Gr/ViewA/ColorByCreatorProcessNames   = 3 "eBrem" "eIoni" "compt"
+#sv:Gr/ViewA/ColorByCreatorProcessColors  = 3 "red" "blue" "green"
+
+############################ Pre Simulation Setup ###############################
+i:Tf/NumberOfSequentialTimes = 19
+i:So/Demo/NumberOfHistoriesInRun = 200000000
+
+i:Ts/ShowHistoryCountAtInterval = 1000000
+b:Ts/PauseBeforeQuit = "True"
+i:Ts/NumberOfThreads = 0
+
+b:Gr/Enable = "False"
+b:Ts/UseQt = "False"
+#i:Ts/MaxInterruptedHistories = 1000000000
