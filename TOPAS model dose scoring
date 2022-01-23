@@ -1,0 +1,153 @@
+#THE WORLD GEOMETRY
+s:Ge/World/Type = "TsBox"
+s:Ge/World/Material = "Air"
+d:Ge/World/HLX = 0.5 m # Half Length
+d:Ge/World/HLY = 1 m
+d:Ge/World/HLZ = 0.5 m
+d:Ge/World/TransX = 0. m
+d:Ge/World/TransY = 0. m
+d:Ge/World/TransZ = 0. m
+d:Ge/World/RotX = 0. deg
+d:Ge/World/RotY = 0. deg
+d:Ge/World/RotZ = 0. deg
+b:Ge/World/Invisible = "False"
+
+#PHSP Position
+s:Ge/PHSPposition/Parent="World"
+s:Ge/PHSPposition/Type="Group"
+d:Ge/PHSPposition/TransX=0. m
+d:Ge/PHSPposition/TransY= 0 m
+d:Ge/PHSPposition/TransZ= 0 m
+d:Ge/PHSPposition/RotX=0. deg
+d:Ge/PHSPposition/RotY=0. deg
+d:Ge/PHSPposition/RotZ=0. deg
+
+#Graphics
+s:Gr/ViewA/Type              = "OpenGL"
+b:Gr/ViewA/IncludeStepPoints = "True"
+u:Gr/ViewA/Zoom = 1
+sv:Gr/ViewA/VisibleWorlds = 1 "All"
+b:Gr/ViewA/IncludeAxes="True"
+d:Gr/ViewA/AxesSize= 5 cm
+
+
+#Physics
+s:Ts/G4DataDirectory = "../../G4Data/"
+
+s:Ph/Default/Type = "Geant4_Modular"
+sv:Ph/Default/Modules = 1 "g4em-penelope"
+#sv:Ph/Default/Modules = 6 "g4em-standard_opt4" "g4h-phy_QGSP_BIC_HP" "g4decay" "g4ion-binarycascade" "g4h-elastic_HP" "g4stopping"
+
+
+###################### SCORING DOSE USING PHASE SPACE FILE #################
+
+#BUILD-UP OF DOSE (UPPER PART OF ARRAY)
+s:Ge/ArrayBuildUp/Type = "TsBox"
+s:Ge/ArrayBuildUp/Parent="World"
+s:Ge/ArrayBuildUp/Material = "G4_WATER"
+d:Ge/ArrayBuildUp/HLX = 13.25 cm # Half Length
+d:Ge/ArrayBuildUp/HLY = 3.85 mm
+d:Ge/ArrayBuildUp/HLZ = 13.25 cm
+d:Ge/ArrayBuildUp/TransX = 0. m
+d:Ge/ArrayBuildUp/TransY = -503.85 mm #-(500 + HLY)
+d:Ge/ArrayBuildUp/TransZ = 0. cm
+d:Ge/ArrayBuildUp/RotX = 0 deg
+d:Ge/ArrayBuildUp/RotY = 0 deg
+d:Ge/ArrayBuildUp/RotZ = 0. deg
+s:Ge/ArrayBuildUp/Color = "blue"
+
+#IONISATION CHAMBERS (I.E. VOXELS)
+s:Ge/Array/Type = "TsBox"
+s:Ge/Array/Parent="World"
+s:Ge/Array/Material = "G4_WATER"
+d:Ge/Array/HLX = 13.25 cm # Half Length
+d:Ge/Array/HLY = 1 mm
+d:Ge/Array/HLZ = 13.25 cm
+d:Ge/Array/TransX = 0. m
+d:Ge/Array/TransY = -508.7 mm #-(500 + 8.7mm (effective depth))
+d:Ge/Array/TransZ = 0. cm
+d:Ge/Array/RotX = 0 deg
+d:Ge/Array/RotY = 0 deg
+d:Ge/Array/RotZ = 0. deg
+s:Ge/Array/Color = "white"
+i:Ge/Array/XBins		= 53
+i:Ge/Array/YBins		= 1
+i:Ge/Array/ZBins		= 53
+
+#BACKSCATTERING WATER SLAB
+s:Ge/ArrayBackScatter/Type = "TsBox"
+s:Ge/ArrayBackScatter/Parent="World"
+s:Ge/ArrayBackScatter/Material = "G4_WATER"
+d:Ge/ArrayBackScatter/HLX = 13.25 cm # Half Length
+d:Ge/ArrayBackScatter/HLY = 10 cm #20cm for BS
+d:Ge/ArrayBackScatter/HLZ = 13.25 cm
+d:Ge/ArrayBackScatter/TransX = 0. m
+d:Ge/ArrayBackScatter/TransY = -609.7 mm #-(500 + 8.7mm +1mm + HLY)
+d:Ge/ArrayBackScatter/TransZ = 0. cm
+d:Ge/ArrayBackScatter/RotX = 0 deg
+d:Ge/ArrayBackScatter/RotY = 0 deg
+d:Ge/ArrayBackScatter/RotZ = 0. deg
+s:Ge/ArrayBackScatter/Color = "blue"
+
+
+#SOURCE
+s:So/MySource/Type = "PhaseSpace"
+s:So/MySource/Component = "PHSPposition"
+s:So/MySource/PhaseSpaceFileName = "phase_space_noBCSE" #has to match exactly
+
+
+b:So/MySource/PhaseSpaceIncludeEmptyHistories = "False" 
+b:So/MySource/PhaseSpacePreCheck = "False" #This checks that header correlated with actual file
+#After running it once for a given PHSP file and header it can be turned off to save time
+
+
+s:Sc/DoseScorer/Quantity                  = "DoseToMedium"
+s:Sc/DoseScorer/Component                 = "Array"
+s:Sc/DoseScorer/Material                  = "G4_WATER"
+b:Sc/DoseScorer/OutputToConsole           = "FALSE"
+s:Sc/DoseScorer/IfOutputFileAlreadyExists = "Overwrite"
+sv:Sc/DoseScorer/Report                   = 1 "Mean" #"Standard_Deviation"
+s:Sc/DoseScorer/OutPutType              = "binary"  
+s:Sc/DoseScorer/Outputfile		     = "D2a_PS_nB_rec45"
+b:Sc/DoseScorer/PreCalculateStoppingPowerRatios = "True"
+
+
+#######################Variance Reduction: Secondary Biasing########################
+#s:Ge/RotatedTarget/AssigntoRegionNamed = "MyRegion"
+#s:Vr/ParticleSplit/Type = "SecondaryBiasing"
+#sv:Vr/ParticleSplit/ForRegion/MyRegion/ProcessesNamed = 1 "eBrem" #
+#uv:Vr/ParticleSplit/ForRegion/MyRegion/SplitNumber = 1 50 #50 #1 1 
+#dv:Vr/ParticleSplit/ForRegion/MyRegion/MaximumEnergies = 1 15 MeV 
+#s:Vr/DirectionalFilter/Type = "DirectionalRussianRoulette"
+#s:Vr/DirectionalFilter/ReferenceComponent = "RotatedTarget"
+#dv:Vr/DirectionalFilter/ForRegion/MyRegion/DirectionalSplitLimits = 1 50.0 cm
+#dv:Vr/DirectionalFilter/ForRegion/MyRegion/DirectionalSplitRadius = 1 15.0 cm
+#sv:Vr/DirectionalFilter/ForRegion/MyRegion/processesNamed = 1 "eBrem"
+
+
+########################Variance Reduction: BCSE#################################
+#s:Vr/CrossSectionEnhancement/Type = "CrossSectionEnhancement"
+#sv:Vr/CrossSectionEnhancement/processesNamed = 1 "eBrem"
+#uv:Vr/CrossSectionEnhancement/EnhancementFactor = 1 10
+
+#b:Vr/UseVarianceReduction = "True"
+
+#b:Ph/Default/Auger = "False"
+
+#sv:Gr/ViewA/OnlyIncludeParticlesCharged = 1 "neutral" #Hiding electrons to evaluate secondary biasing
+#s:Gr/ViewA/ColorBy                       = "CreatorProcess"
+#sv:Gr/ViewA/ColorByCreatorProcessNames   = 3 "eBrem" "eIoni" "compt"
+#sv:Gr/ViewA/ColorByCreatorProcessColors  = 3 "red" "blue" "green"
+
+########################## Pre-Simulation Setup ###################################
+i:So/MySource/PhaseSpaceMultipleUse = 9 #The no. of times I want to reuse the phase space!
+i:Tf/NumberOfSequentialTimes = 5
+#i:So/MySource/NumberOfHistoriesInRun = 50
+
+i:Ts/ShowHistoryCountAtInterval = 1000000
+b:Ts/PauseBeforeQuit = "True"
+i:Ts/NumberOfThreads = 0
+
+b:Gr/Enable = "False"
+b:Ts/UseQt = "False"
+#i:Ts/MaxInterruptedHistories = 1000000000
